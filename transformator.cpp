@@ -42,11 +42,13 @@ void Transformator::addImageValsForStream(QString SEP, QString &val, QTextStream
     }
 
     for(int width = 0; width < image.width(); width++) {
+        QStringList vals;
         for(int height = 0; height < image.height(); height++) {
             QColor takeMe( image.pixel(width, height) );
             double pixVal =  1 - (double)takeMe.black() / 255; // Scaled to 0-1 borders
-            stream << pixVal << SEP;
+            vals.push_back(QString::number(pixVal));
         }
+        stream << vals.join(SEP);
     }
     stream << endl;
 }
@@ -63,6 +65,7 @@ bool Transformator::startLearning(QString SEP){
         progressCounter = 0;
 
     QString oldClassVal = "";
+    QStringList classNamesList;
 
     QDir dir;
     dir.setPath(m_Dir);
@@ -82,7 +85,9 @@ bool Transformator::startLearning(QString SEP){
         fileCounter++;
     }
 
-    QVector<int> progresPoints = {100, 80, 60, 40, 20, 0};
+    QVector<int> progresPoints;
+    for(int point = 100; point >= 0; point--)
+        progresPoints.push_back(point);
 
     while(qdi.hasNext()) {
         progressCounter++;
@@ -100,15 +105,18 @@ bool Transformator::startLearning(QString SEP){
         }
 
         if(oldClassVal != classValue){
+            classNamesList.push_back(classValue);
             classCounter++;
             oldClassVal = classValue;
         }
         double progtmp = (double)progressCounter / (double)fileCounter * 100;
         if((int)progtmp > progresPoints.back()){
             progresPoints.pop_back();
-            emit makeTwentyPercentProgress();
+            emit makeOnePercentProgress();
         }
     }
+
+    QString classNames = classNamesList.join(SEP);
 
     QFile fileL(m_FileName + "L.signal"),
           fileT(m_FileName + "T.signal");
@@ -118,11 +126,13 @@ bool Transformator::startLearning(QString SEP){
 
     fileL.open(QIODevice::WriteOnly | QIODevice::Truncate);
     streamLOut << inputSize << SEP << classCounter << endl;
+    streamLOut << classNames << endl;
     streamLOut << signalL;
     fileL.close();
 
     fileT.open(QIODevice::WriteOnly | QIODevice::Truncate);
     streamTOut << inputSize << SEP << classCounter << endl;
+    streamTOut << classNames << endl;
     streamTOut << signalT;
     fileT.close();
 

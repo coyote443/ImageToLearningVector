@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     m_Transformator = new Transformator(this);
-    connect(m_Transformator, SIGNAL(makeTwentyPercentProgress()), this, SLOT(on_ProgressBar_SetValue()) );
+    connect(m_Transformator, SIGNAL(makeOnePercentProgress()), this, SLOT(on_ProgressBar_SetValue()) );
 }
 
 MainWindow::~MainWindow()
@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_ProgressBar_SetValue(){
-    m_ProgresVal += 20;
+    m_ProgresVal += 1;
     if(m_ProgresVal > 100) m_ProgresVal = 100;
     ui->progressBar->setValue(m_ProgresVal);
 }
@@ -42,6 +42,9 @@ void MainWindow::on_spinBoxTrening_valueChanged(int arg1){
 void MainWindow::on_pushButtonGenerate_clicked(){
     QString loc = ui->lineEditLocalisation->text();
     QString nam = ui->lineEditName->text();
+
+    m_ProgresVal = 0;
+    ui->progressBar->setValue(m_ProgresVal);
 
     int test = ui->spinBoxTrening->value();
     int learn= ui->spinBoxLearning->value();

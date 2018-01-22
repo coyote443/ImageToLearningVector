@@ -19,7 +19,7 @@ public:
     bool startLearning(QString SEP = "[::]");
 
 signals:
-    void makeTwentyPercentProgress();
+    void makeOnePercentProgress();
 
 private:
     int     m_Test,
