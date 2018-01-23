@@ -16,10 +16,11 @@ class Transformator : public QObject
 public:
     Transformator(QObject * parent = 0);
     void setParams(int percLern, int percTest, QString localisation, QString fileName);
-    bool startLearning(QString SEP = "[::]");
+    bool startCreatingLearningVector(QString SEP = "[::]");
 
 signals:
     void makeOnePercentProgress();
+    void fullProgress();
 
 private:
     int     m_Test,

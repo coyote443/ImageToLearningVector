@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_Transformator = new Transformator(this);
     connect(m_Transformator, SIGNAL(makeOnePercentProgress()), this, SLOT(on_ProgressBar_SetValue()) );
+    connect(m_Transformator, SIGNAL(fullProgress()), this, SLOT(fullProgress()) );
 }
 
 MainWindow::~MainWindow()
@@ -18,6 +19,11 @@ MainWindow::~MainWindow()
 void MainWindow::on_ProgressBar_SetValue(){
     m_ProgresVal += 1;
     if(m_ProgresVal > 100) m_ProgresVal = 100;
+    ui->progressBar->setValue(m_ProgresVal);
+}
+
+void MainWindow::fullProgress(){
+    m_ProgresVal = 100;
     ui->progressBar->setValue(m_ProgresVal);
 }
 
@@ -50,6 +56,6 @@ void MainWindow::on_pushButtonGenerate_clicked(){
     int learn= ui->spinBoxLearning->value();
     m_Transformator->setParams(learn, test, loc, nam);
 
-    if(m_Transformator->startLearning("[::]") != true)
+    if(m_Transformator->startCreatingLearningVector("[::]") != true)
         QMessageBox::information(this, "ERROR", "Nie wykrywam bazy danych. Zmień lokalizację, wybierz [tenFolder]/[jeden z n-folderów z obrazami gif] ");
 }

@@ -22,6 +22,7 @@ private slots:
     void on_spinBoxTrening_valueChanged(int arg1);
     void on_pushButtonGenerate_clicked();
     void on_ProgressBar_SetValue();
+    void fullProgress();
 
 private:
     Ui::MainWindow *ui;

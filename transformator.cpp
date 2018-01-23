@@ -53,7 +53,7 @@ void Transformator::addImageValsForStream(QString SEP, QString &val, QTextStream
     stream << endl;
 }
 
-bool Transformator::startLearning(QString SEP){
+bool Transformator::startCreatingLearningVector(QString SEP){
     QString     signalL,
                 signalT;
 
@@ -115,6 +115,7 @@ bool Transformator::startLearning(QString SEP){
             emit makeOnePercentProgress();
         }
     }
+    emit fullProgress();
 
     QString classNames = classNamesList.join(SEP);
 
