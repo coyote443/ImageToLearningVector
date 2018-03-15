@@ -77,7 +77,7 @@ bool Transformator::startCreatingLearningVector(QString SEP){
     QImage tmpImg(tmpLoc);
     int inputSize = tmpImg.width() * tmpImg.height();
 
-    if(!num.hasNext())  // to jest tak biedne ze makabra
+    if(!num.hasNext())  // to nie jest najlepsze rozwiązanie
         return false;
 
     while(num.hasNext()){
@@ -98,10 +98,12 @@ bool Transformator::startCreatingLearningVector(QString SEP){
         if(itIsLearnVectOrder){
             streamL << classValue << endl;
             addImageValsForStream(SEP, fileLoc, streamL);
+            streamL << fileLoc << endl;
         }
         else{
             streamT << classValue << endl;
             addImageValsForStream(SEP, fileLoc, streamT);
+            streamT << fileLoc << endl;
         }
 
         if(oldClassVal != classValue){
